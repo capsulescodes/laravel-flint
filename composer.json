@@ -60,5 +60,5 @@
     },
     "minimum-stability" : "dev",
     "prefer-stable" : true,
-    "bin": [ "builds/pint" ]
+    "bin": [ "builds/flint" ]
 }

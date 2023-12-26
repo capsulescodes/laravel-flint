@@ -18,7 +18,7 @@ class RepositoriesServiceProvider extends ServiceProvider
         {
             $input = resolve( InputInterface::class );
 
-            return new ConfigurationJsonRepository( $input->getOption( 'config' ) ?: Project::path() . '/pint.json', $input->getOption( 'preset' ) );
+            return new ConfigurationJsonRepository( $input->getOption( 'config' ) ?: Project::path() . '/flint.json', $input->getOption( 'preset' ) );
         });
 
         $this->app->singleton( PathsRepository::class, fn() => new GitPathsRepository( Project::path() ) );

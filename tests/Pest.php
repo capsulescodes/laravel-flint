@@ -6,7 +6,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Illuminate\Foundation\Console\Kernel;
-use Test\TestCase;
+use Tests\TestCase;
 
 
 uses( TestCase::class )->in( 'Feature' );
@@ -28,6 +28,7 @@ function run( string $command, array $arguments ) : array
     $output = new BufferedOutput( BufferedOutput::VERBOSITY_VERBOSE );
 
     app()->singleton( InputInterface::class, fn() => $input );
+
     app()->singleton( OutputInterface::class, fn() => $output );
 
     $statusCode = resolve( Kernel::class )->call( $command, $arguments, $output );

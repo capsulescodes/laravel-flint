@@ -11,9 +11,9 @@ use App\Actions\ElaborateSummary;
 
 class DefaultCommand extends Command
 {
-    protected string $name = 'default';
+    protected $name = 'default';
 
-    protected string $description = 'Fix the coding style of the given path';
+    protected $description = 'Fix the coding style of the given path';
 
 
     protected function configure() : void

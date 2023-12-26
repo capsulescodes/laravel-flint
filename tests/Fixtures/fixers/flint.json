@@ -1,0 +1,8 @@
+{
+    "fixers": [
+        "Tests\\Fixtures\\CustomFixer"
+    ],
+    "rules": {
+        "Custom/fixer": true
+    }
+}
