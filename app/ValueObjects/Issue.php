@@ -6,86 +6,49 @@ use Illuminate\Support\Str;
 use NunoMaduro\Collision\Highlighter;
 use ReflectionClass;
 
+
 class Issue
 {
-    /**
-     * Creates a new Issue instance.
-     *
-     * @param  string  $path
-     * @param  string  $file
-     * @param  string  $symbol
-     * @param  array<string, array<int, string>|\Throwable>  $payload
-     */
     public function __construct(
-        protected $path,
-        protected $file,
-        protected $symbol,
-        protected $payload
-    ) {
-        // ..
+        protected string $path,
+        protected string $file,
+        protected string $symbol,
+        protected array $payload
+    ) {}
+
+
+    public function file() : string
+    {
+        return str_replace( $this->path.DIRECTORY_SEPARATOR, '', $this->file );
     }
 
-    /**
-     * Returns the file where the change occur.
-     *
-     * @return string
-     */
-    public function file()
+    public function description( bool $testing ) : string
     {
-        return str_replace($this->path.DIRECTORY_SEPARATOR, '', $this->file);
+        if(! empty( $this->payload[ 'source' ] ) ) return $this->payload[ 'source' ]->getMessage();
+
+        return collect( $this->payload[ 'appliedFixers' ] )->map( fn( $appliedFixer ) => $appliedFixer )->implode(', ');
     }
 
-    /**
-     * Returns the issue's description.
-     *
-     * @param  bool  $testing
-     * @return string
-     */
-    public function description($testing)
+    public function fixable() : bool
     {
-        if (! empty($this->payload['source'])) {
-            return $this->payload['source']->getMessage();
-        }
-
-        return collect($this->payload['appliedFixers'])->map(function ($appliedFixer) {
-            return $appliedFixer;
-        })->implode(', ');
+        return ! empty( $this->payload[ 'appliedFixers' ] );
     }
 
-    /**
-     * If the issue can be fixed.
-     *
-     * @return bool
-     */
-    public function fixable()
+    public function code() : string | null
     {
-        return ! empty($this->payload['appliedFixers']);
-    }
+        if( ! $this->fixable() )
+        {
+            $content = file_get_contents( $this->file );
 
-    /**
-     * Returns the issue's code, if any.
-     *
-     * @return string|null
-     */
-    public function code()
-    {
-        if (! $this->fixable()) {
-            $content = file_get_contents($this->file);
+            $exception = $this->payload[ 'source' ]->getPrevious() ?: $this->payload[ 'source' ];
 
-            $exception = $this->payload['source']->getPrevious() ?: $this->payload['source'];
-
-            return (new Highlighter())->highlight($content, $exception->getLine());
+            return ( new Highlighter() )->highlight( $content, $exception->getLine() );
         }
 
         return $this->diff();
     }
 
-    /**
-     * Returns the issue's symbol.
-     *
-     * @return string
-     */
-    public function symbol()
+    public function symbol() : string
     {
         return $this->symbol;
     }
@@ -95,59 +58,55 @@ class Issue
      *
      * @return string|null
      */
-    protected function diff()
+    protected function diff() : string | null
     {
-        if ($this->payload['diff']) {
+        if( $this->payload[ 'diff' ] )
+        {
             $highlighter = new Highlighter();
-            $reflector = new ReflectionClass($highlighter);
 
-            $diff = $this->payload['diff'];
+            $reflector = new ReflectionClass( $highlighter );
 
-            $diff = str($diff)
-                ->explode("\n")
-                ->map(function ($line) {
-                    if (Str::startsWith($line, '+')) {
-                        return '//+<fg=green>'.$line.'</>';
-                    } elseif (Str::startsWith($line, '-')) {
-                        return '//-<fg=red>'.$line.'</>';
-                    }
+            $diff = $this->payload[ 'diff' ];
 
-                    return $line;
-                })->implode("\n");
-
-            $method = tap($reflector->getMethod('getHighlightedLines'))->setAccessible(true);
-            $tokenLines = $method->invoke($highlighter, "<?php\n".$diff);
-            $tokenLines = array_slice($tokenLines, 3);
-
-            $method = tap($reflector->getMethod('colorLines'))->setAccessible(true);
-
-            /** @var array<int, string> $lines */
-            $lines = $method->invoke($highlighter, $tokenLines);
-            $lines = collect($lines)->map(function ($line) {
-                if (str($line)->startsWith('[90;3m//-')) {
-                    return str($line)
-                        ->replaceFirst('[90;3m//-', '');
+            $diff = str( $diff )->explode( "\n" )->map( function( $line )
+            {
+                if( Str::startsWith( $line, '+' ) )
+                {
+                    return '//+<fg=green>' . $line . '</>';
                 }
-
-                if (str($line)->startsWith('//-')) {
-                    return str($line)
-                        ->replaceFirst('//-', '');
-                }
-
-                if (str($line)->startsWith('[90;3m//+')) {
-                    return str($line)
-                        ->replaceFirst('[90;3m//+', '');
-                }
-
-                if (str($line)->startsWith('//+')) {
-                    return str($line)
-                        ->replaceFirst('//+', '');
+                elseif( Str::startsWith( $line, '-' ) )
+                {
+                    return '//-<fg=red>' . $line . '</>';
                 }
 
                 return $line;
-            });
 
-            return '  '.$lines->implode("\n  ");
+            } )->implode( "\n" );
+
+            $method = tap( $reflector->getMethod( 'getHighlightedLines' ) )->setAccessible( true );
+
+            $tokenLines = $method->invoke( $highlighter, "<?php\n" . $diff );
+
+            $tokenLines = array_slice( $tokenLines, 3 );
+
+            $method = tap( $reflector->getMethod( 'colorLines' ) )->setAccessible( true );
+
+            $lines = $method->invoke( $highlighter, $tokenLines );
+
+            $lines = collect( $lines )->map( function( $line )
+            {
+                if( str( $line )->startsWith( '[90;3m//-' ) ) return str( $line )->replaceFirst( '[90;3m//-', '' );
+
+                if( str( $line )->startsWith( '//-' ) ) return str( $line )->replaceFirst( '//-', '' );
+
+                if( str( $line )->startsWith( '[90;3m//+' ) ) return str( $line )->replaceFirst( '[90;3m//+', '' );
+
+                if( str( $line )->startsWith( '//+' ) ) return str( $line )->replaceFirst( '//+', '' );
+
+                return $line;
+            } );
+
+            return '  ' . $lines->implode( "\n  " );
         }
     }
 }

@@ -2,45 +2,25 @@
 
 namespace App\Providers;
 
-use App\Contracts\PathsRepository;
-use App\Project;
-use App\Repositories\ConfigurationJsonRepository;
-use App\Repositories\GitPathsRepository;
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\ConfigurationJsonRepository;
 use Symfony\Component\Console\Input\InputInterface;
+use App\Project;
+use App\Contracts\PathsRepository;
+use App\Repositories\GitPathsRepository;
+
 
 class RepositoriesServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function register() : void
     {
-        //
-    }
+        $this->app->singleton( ConfigurationJsonRepository::class, function()
+        {
+            $input = resolve( InputInterface::class );
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->app->singleton(ConfigurationJsonRepository::class, function () {
-            $input = resolve(InputInterface::class);
-
-            return new ConfigurationJsonRepository(
-                $input->getOption('config') ?: Project::path().'/pint.json',
-                $input->getOption('preset'),
-            );
+            return new ConfigurationJsonRepository( $input->getOption( 'config' ) ?: Project::path() . '/pint.json', $input->getOption( 'preset' ) );
         });
 
-        $this->app->singleton(PathsRepository::class, function () {
-            return new GitPathsRepository(
-                Project::path(),
-            );
-        });
+        $this->app->singleton( PathsRepository::class, fn() => new GitPathsRepository( Project::path() ) );
     }
 }

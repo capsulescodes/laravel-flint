@@ -1,13 +1,12 @@
 <?php
 
-it('fixes the code', function () {
-    [$statusCode, $output] = run('default', [
-        'path' => base_path('tests/Fixtures/files/binary_operator_spaces.php'),
-        '--preset' => 'laravel',
-    ]);
+it( 'fixes the code', function()
+{
+    [ $statusCode, $output ] = run( 'default', [ 'path' => base_path( 'tests/Fixtures/files/binary_operator_spaces.php' ), '--preset' => 'laravel' ] );
 
-    expect($statusCode)->toBe(1)
-        ->and($output)
+    expect( $statusCode )
+        ->toBe( 1 )
+        ->and( $output )
         ->toContain(
             <<<'EOF'
   -    'long_item_name' =>  'value',

@@ -1,14 +1,13 @@
 <?php
 
-it('fixes the code', function () {
-    [$statusCode, $output] = run('default', [
-        'path' => base_path('tests/Fixtures/files/braces.php'),
-        '--preset' => 'laravel',
-    ]);
+it( 'fixes the code', function()
+{
+    [ $statusCode, $output ] = run( 'default', [ 'path' => base_path( 'tests/Fixtures/files/braces.php' ), '--preset' => 'laravel' ] );
 
-    expect($statusCode)->toBe(1)
-        ->and($output)
-        ->toContain('  ⨯')
+    expect( $statusCode )
+        ->toBe( 1 )
+        ->and( $output )
+        ->toContain( '  ⨯' )
         ->toContain(
             <<<'EOF'
   -$a = function ()

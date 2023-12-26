@@ -2,7 +2,8 @@
 
 use App\Factories\ConfigurationFactory;
 
-return ConfigurationFactory::preset([], [
+
+return ConfigurationFactory::preset( [], [
     '@Symfony' => true,
     'no_unused_imports' => true,
-]);
+] );

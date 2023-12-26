@@ -2,18 +2,15 @@
 
 namespace App\Factories;
 
-use App\Project;
-use App\Repositories\ConfigurationJsonRepository;
+use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Config;
+use App\Repositories\ConfigurationJsonRepository;
 use PhpCsFixer\Finder;
+use App\Project;
+
 
 class ConfigurationFactory
 {
-    /**
-     * The list of files to ignore.
-     *
-     * @var array<int, string>
-     */
     protected static $notName = [
         '_ide_helper_actions.php',
         '_ide_helper_models.php',
@@ -22,11 +19,6 @@ class ConfigurationFactory
         '*.blade.php',
     ];
 
-    /**
-     * The list of folders to ignore.
-     *
-     * @var array<int, string>
-     */
     protected static $exclude = [
         'bootstrap/cache',
         'build',
@@ -34,42 +26,26 @@ class ConfigurationFactory
         'storage',
     ];
 
-    /**
-     * Creates a PHP CS Fixer Configuration with the given array of rules.
-     *
-     * @param  array<int, object>  $fixers
-     * @param  array<string, array<string, array<int|string, string|null>|bool|string>|bool>  $rules
-     * @return \PhpCsFixer\ConfigInterface
-     */
-    public static function preset($fixers, $rules)
+
+    public static function preset( array $fixers, array $rules ) : ConfigInterface
     {
-        return (new Config())
-            ->setFinder(self::finder())
-            ->registerCustomFixers(array_merge($fixers, self::fixers()))
-            ->setRules(array_merge($rules, resolve(ConfigurationJsonRepository::class)->rules()))
-            ->setRiskyAllowed(true)
-            ->setUsingCache(true);
+        return ( new Config() )
+            ->setFinder( self::finder() )
+            ->registerCustomFixers( array_merge( $fixers, self::fixers() ) )
+            ->setRules( array_merge( $rules, resolve( ConfigurationJsonRepository::class )->rules() ) )
+            ->setRiskyAllowed( true )
+            ->setUsingCache( true );
     }
 
-    /**
-     * Creates the finder instance.
-     *
-     * @return \PhpCsFixer\Finder
-     */
-    public static function finder()
+    public static function finder() : Finder
     {
-        $localConfiguration = resolve(ConfigurationJsonRepository::class);
+        $localConfiguration = resolve( ConfigurationJsonRepository::class );
 
-        $finder = Finder::create()
-            ->notName(static::$notName)
-            ->exclude(static::$exclude)
-            ->ignoreDotFiles(true)
-            ->ignoreVCS(true);
+        $finder = Finder::create()->notName( static::$notName )->exclude( static::$exclude )->ignoreDotFiles( true )->ignoreVCS( true );
 
-        foreach ($localConfiguration->finder() as $method => $arguments) {
-            if (! method_exists($finder, $method)) {
-                abort(1, sprintf('Option [%s] is not valid.', $method));
-            }
+        foreach( $localConfiguration->finder() as $method => $arguments )
+        {
+            if( ! method_exists( $finder, $method ) ) abort( 1, sprintf( 'Option [%s] is not valid.', $method ) );
 
             $finder->{$method}($arguments);
         }
@@ -77,30 +53,22 @@ class ConfigurationFactory
         return $finder;
     }
 
-    /**
-     * Generates fixer classes.
-     *
-     * @return array<int, object>
-     */
-    public static function fixers()
+    public static function fixers() : array
     {
-        $localConfiguration = resolve(ConfigurationJsonRepository::class);
+        $localConfiguration = resolve( ConfigurationJsonRepository::class );
 
-        if (empty($localConfiguration->fixers())) {
-            return [];
+        if( empty( $localConfiguration->fixers() ) ) return [];
+
+        if( ! file_exists( Project::path() . '/vendor/autoload.php' ) )
+        {
+            abort( 1, sprintf( 'Project composer autoload file not found' ) );
         }
 
-        if (! file_exists(Project::path().'/vendor/autoload.php')) {
-            abort(1, sprintf('Composer autoload file not found'));
-        }
-
-        require Project::path().'/vendor/autoload.php';
+        require Project::path() . '/vendor/autoload.php';
 
         $fixers = [];
 
-        foreach ($localConfiguration->fixers() as $class) {
-            $fixers[] = new $class();
-        }
+        foreach( $localConfiguration->fixers() as $class ) $fixers[] = new $class();
 
         return $fixers;
     }

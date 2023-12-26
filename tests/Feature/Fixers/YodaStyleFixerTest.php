@@ -1,15 +1,14 @@
 <?php
 
-it('fixes the code', function () {
-    [$statusCode, $output] = run('default', [
-        'path' => base_path('tests/Fixtures/files/yoda_style.php'),
-        '--preset' => 'laravel',
-    ]);
+it( 'fixes the code', function()
+{
+    [ $statusCode, $output ] = run( 'default', [ 'path' => base_path( 'tests/Fixtures/files/yoda_style.php' ), '--preset' => 'laravel' ] );
 
-    expect($statusCode)->toBe(1)
-        ->and($output)
-        ->toContain('  ⨯')
-        ->toContain('@@ -20,6 +20,6 @@')
+    expect( $statusCode )
+        ->toBe( 1 )
+        ->and( $output )
+        ->toContain( '  ⨯' )
+        ->toContain( '@@ -20,6 +20,6 @@' )
         ->toContain(
             <<<'EOF'
               -if (null === $int) {

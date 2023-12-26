@@ -8,42 +8,40 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 use SplFileInfo;
 
+
 class CustomFixer implements FixerInterface
 {
-    public function isCandidate(Tokens $tokens): bool
+    public function isCandidate( Tokens $tokens ) : bool
     {
         return true;
     }
 
-    public function isRisky(): bool
+    public function isRisky() : bool
     {
         return true;
     }
 
-    public function fix(SplFileInfo $file, Tokens $tokens): void
+    public function fix( SplFileInfo $file, Tokens $tokens ) : void
     {
-        $tokens->clearRange(0, $tokens->count() - 1);
+        $tokens->clearRange( 0, $tokens->count() - 1 );
     }
 
-    public function getDefinition(): FixerDefinitionInterface
+    public function getDefinition() : FixerDefinitionInterface
     {
-        return new FixerDefinition(
-            'Removes all code in files called empty.php',
-            []
-        );
+        return new FixerDefinition( 'Removes all code in files called empty.php', [] );
     }
 
-    public function getName(): string
+    public function getName() : string
     {
         return "Custom/fixer";
     }
 
-    public function getPriority(): int
+    public function getPriority() : int
     {
         return 0;
     }
 
-    public function supports(SplFileInfo $file): bool
+    public function supports( SplFileInfo $file ) : bool
     {
         return $file->getFilename() === 'empty.php';
     }

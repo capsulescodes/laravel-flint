@@ -2,35 +2,16 @@
 
 namespace App\Providers;
 
-use App\Actions\ElaborateSummary;
-use App\Actions\FixCode;
-use App\Commands\DefaultCommand;
 use Illuminate\Support\ServiceProvider;
+use App\Commands\DefaultCommand;
+use App\Actions\FixCode;
+use App\Actions\ElaborateSummary;
+
 
 class CommandsServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function register() : void
     {
-        //
-    }
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->app->bindMethod([DefaultCommand::class, 'handle'], function ($command) {
-            return $command->handle(
-                resolve(FixCode::class),
-                resolve(ElaborateSummary::class)
-            );
-        });
+        $this->app->bindMethod( [ DefaultCommand::class, 'handle' ], fn( $command ) => $command->handle( resolve( FixCode::class ), resolve( ElaborateSummary::class ) ) );
     }
 }

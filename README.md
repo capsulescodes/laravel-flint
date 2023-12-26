@@ -1,8 +1,4 @@
-<p align="center"><img src="/art/logo.svg" width="50%" alt="Logo Laravel Pint"></p>
-
-<p align="center">
-    <img src="/art/overview.png" alt="Overview Laravel Pint" style="width:70%;">
-</p>
+<p align="center"><img src="../capsules-codes-flint-logotype.svg" width="50%" alt="Logo Capsules Codes Flint"></p>
 
 <p align="center">
     <a href="https://github.com/laravel/pint/actions"><img src="https://github.com/laravel/pint/workflows/tests/badge.svg" alt="Build Status"></a>

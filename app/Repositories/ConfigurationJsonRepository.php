@@ -2,111 +2,62 @@
 
 namespace App\Repositories;
 
+
 class ConfigurationJsonRepository
 {
-    /**
-     * Lists the finder options.
-     *
-     * @var array<int, string>
-     */
-    protected $finderOptions = [
+    protected array $finderOptions = [
         'exclude',
         'notPath',
         'notName',
     ];
 
-    /**
-     * Create a new Configuration Json Repository instance.
-     *
-     * @param  string|null  $path
-     * @param  string|null  $preset
-     * @return void
-     */
-    public function __construct(protected $path, protected $preset)
+
+    public function __construct(protected string | null $path, protected string | null $preset ) {}
+
+    public function finder() : array
     {
-        //
+        return collect( $this->get() )->filter( fn( $value, $key ) => in_array( $key, $this->finderOptions ) )->toArray();
     }
 
-    /**
-     * Get the finder options.
-     *
-     * @return array<string, array<int, string>|string>
-     */
-    public function finder()
+    public function fixers() : array
     {
-        return collect($this->get())
-            ->filter(fn ($value, $key) => in_array($key, $this->finderOptions))
-            ->toArray();
+        return $this->get()[ 'fixers' ] ?? [];
     }
 
-    /**
-     * Get the fixers options.
-     *
-     * @return array<int, string>
-     */
-    public function fixers()
+    public function rules() : array
     {
-        return $this->get()['fixers'] ?? [];
+        return $this->get()[ 'rules' ] ?? [];
     }
 
-    /**
-     * Get the rules options.
-     *
-     * @return array<int, string>
-     */
-    public function rules()
+    public function cacheFile() : string | null
     {
-        return $this->get()['rules'] ?? [];
+        return $this->get()[ 'cache-file' ] ?? null;
     }
 
-    /**
-     * Get the cache file location.
-     *
-     * @return string|null
-     */
-    public function cacheFile()
+    public function preset() : string
     {
-        return $this->get()['cache-file'] ?? null;
+        return $this->preset ?: ( $this->get()[ 'preset' ] ?? 'laravel' );
     }
 
-    /**
-     * Get the preset option.
-     *
-     * @return string
-     */
-    public function preset()
+    protected function get() : array
     {
-        return $this->preset ?: ($this->get()['preset'] ?? 'laravel');
-    }
-
-    /**
-     * Get the configuration from the "pint.json" file.
-     *
-     * @return array<string, array<int, string>|string>
-     */
-    protected function get()
-    {
-        if ($this->fileExists((string) $this->path)) {
-            return tap(json_decode(file_get_contents($this->path), true), function ($configuration) {
-                if (! is_array($configuration)) {
-                    abort(1, sprintf('The configuration file [%s] is not valid JSON.', $this->path));
-                }
-            });
+        if( $this->fileExists( ( string ) $this->path ) )
+        {
+            return tap( json_decode( file_get_contents( $this->path ), true ), function( $configuration )
+            {
+                if( ! is_array( $configuration ) ) abort( 1, sprintf( 'The configuration file [%s] is not valid JSON.', $this->path ) );
+            } );
         }
 
         return [];
     }
 
-    /**
-     * Determine if a local or remote file exists.
-     *
-     * @return bool
-     */
-    protected function fileExists(string $path)
+    protected function fileExists( string $path ) : bool
     {
-        return match (true) {
-            str_starts_with($path, 'http://') || str_starts_with($path, 'https://') => str_contains(get_headers($path)[0], '200 OK'),
-            default => file_exists($path)
+        return match( true )
+        {
+            str_starts_with( $path, 'http://' ) || str_starts_with( $path, 'https://' ) => str_contains( get_headers( $path )[ 0 ], '200 OK' ),
+            default => file_exists( $path )
         };
     }
 }
