@@ -10,4 +10,3 @@ php flint app:build
 
 4. Commit all changes
 5. Push all commits to GitHub
-6. [Create a new GitHub release](https://github.com/laravel/pint/releases/new) with the release notes
