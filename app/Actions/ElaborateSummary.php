@@ -34,7 +34,7 @@ class ElaborateSummary
             0,
             0,
             $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE,
-            $this->input->getOption( 'test' ),
+            $this->input->getOption( 'test' ) || $this->input->getOption( 'bail' ),
             $this->output->isDecorated()
         );
 
@@ -47,7 +47,7 @@ class ElaborateSummary
             $this->summaryOutput->handle( $summary, $totalFiles );
         }
 
-        $failure = ( $summary->isDryRun() && count($changes ) > 0 )
+        $failure = ( ( $summary->isDryRun() || $this->input->getOption( 'repair' ) ) && count( $changes ) > 0 )
             || count( $this->errors->getInvalidErrors() ) > 0
             || count( $this->errors->getExceptionErrors() ) > 0
             || count( $this->errors->getLintErrors() ) > 0;

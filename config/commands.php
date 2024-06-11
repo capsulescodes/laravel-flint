@@ -24,8 +24,7 @@ return [
         NunoMaduro\Collision\Adapters\Laravel\Commands\TestCommand::class,
         NunoMaduro\LaravelConsoleSummary\SummaryCommand::class,
 
-        Symfony\Component\Console\Command\DumpCompletionCommand::class,
-        Symfony\Component\Console\Command\HelpCommand::class
-    ]
+        Symfony\Component\Console\Command\DumpCompletionCommand::class
 
+    ]
 ];

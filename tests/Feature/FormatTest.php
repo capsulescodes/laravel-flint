@@ -8,10 +8,9 @@ it( 'outputs checkstyle format', function()
         ->toBe( 1 )
         ->and( $output )
         ->toContain( '<?xml version="1.0" encoding="UTF-8"?>' )
-        ->toContain( '<checkstyle>' )
+        ->toContain( '<checkstyle' )
         ->toContain( '</checkstyle>' )
-        ->not
-        ->toContain( sprintf( '⨯ %s', implode( DIRECTORY_SEPARATOR, [ 'tests', 'Fixtures', 'with-fixable-issues', 'file.php' ] ) ) );
+        ->not->toContain( sprintf( '⨯ %s', implode( DIRECTORY_SEPARATOR, [ 'tests', 'Fixtures', 'with-fixable-issues', 'file.php' ] ) ) );
 });
 
 it( 'outputs json format', function()

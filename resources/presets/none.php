@@ -3,4 +3,4 @@
 use App\Factories\ConfigurationFactory;
 
 
-return ConfigurationFactory::preset( [], [] );
+return ConfigurationFactory::preset( [] );

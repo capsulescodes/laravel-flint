@@ -41,7 +41,7 @@ class ConfigurationJsonRepository
 
     protected function get() : array
     {
-        if( $this->fileExists( ( string ) $this->path ) )
+        if( ! is_null($this->path) && $this->fileExists( ( string ) $this->path ) )
         {
             return tap( json_decode( file_get_contents( $this->path ), true ), function( $configuration )
             {

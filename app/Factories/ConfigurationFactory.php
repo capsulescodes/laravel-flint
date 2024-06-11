@@ -4,6 +4,7 @@ namespace App\Factories;
 
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Config;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use App\Repositories\ConfigurationJsonRepository;
 use PhpCsFixer\Finder;
 use App\Project;
@@ -27,9 +28,10 @@ class ConfigurationFactory
     ];
 
 
-    public static function preset( array $fixers, array $rules ) : ConfigInterface
+    public static function preset( array $rules, array $fixers = [] ) : ConfigInterface
     {
         return ( new Config() )
+            ->setParallelConfig( ParallelConfigFactory::detect() )
             ->setFinder( self::finder() )
             ->registerCustomFixers( array_merge( $fixers, self::fixers() ) )
             ->setRules( array_merge( $rules, resolve( ConfigurationJsonRepository::class )->rules() ) )
