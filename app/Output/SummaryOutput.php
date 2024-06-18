@@ -43,11 +43,11 @@ class SummaryOutput
 
         $issues = $this->getIssues( Project::path(), $summary );
 
-        render( view('summary', [ 'totalFiles' => $totalFiles, 'issues' => $issues, 'testing' => $summary->isDryRun(), 'preset' => $this->presets[$this->config->preset() ] ] ) );
+        render( ( string ) view( 'summary', [ 'totalFiles' => $totalFiles, 'issues' => $issues, 'testing' => $summary->isDryRun(), 'preset' => $this->presets[ $this->config->preset() ] ] ) );
 
         foreach( $issues as $issue )
         {
-            render( view( 'issue.show', [ 'issue' => $issue, 'isVerbose' => $this->output->isVerbose(),'testing' => $summary->isDryRun() ] ) );
+            render( ( string ) view( 'issue.show', [ 'issue' => $issue, 'isVerbose' => $this->output->isVerbose(), 'testing' => $summary->isDryRun() ] ) );
 
             if( $this->output->isVerbose() && $issue->code() ) $this->output->writeln( $issue->code() );
         }

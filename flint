@@ -1,10 +1,12 @@
+#!/usr/bin/env php
+
 <?php
 
 define( 'LARAVEL_START', microtime( true ) );
 
-require file_exists( __DIR__.'/vendor/autoload.php' ) ?  __DIR__.'/vendor/autoload.php' : __DIR__.'/../../autoload.php';
+$autoloader = require file_exists( __DIR__ . '/vendor/autoload.php' ) ?  __DIR__ . '/vendor/autoload.php' : __DIR__ . '/../../autoload.php';
 
-$app = require_once __DIR__.'/bootstrap/app.php';
+$app = require_once __DIR__ . '/bootstrap/app.php';
 
 $kernel = $app->make( Illuminate\Contracts\Console\Kernel::class );
 
