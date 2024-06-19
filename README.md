@@ -1,10 +1,8 @@
-<p align="center"><img src="capsules-laravel-flint-image.png" width="400px" height="265px" alt="Laravel Flint" /></p>
+<p align="center"><img src="capsules-laravel-flint-image.svg" width="400px" height="265px" alt="Laravel Flint" /></p>
 
-<br>
+**Laravel Flint** is a PHP code style fixer for near-minimalists based on **[Laravel Pint](https://github.com/laravel/pint)**.
 
-## Introduction
-
-**Laravel Flint** is a PHP code style fixer for near-minimalists based on **[Laravel Pint](https://github.com/laravel/pint)**. Flint is built on top of **[PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer)** and makes it simple to ensure that your code style stays **clean** and **consistent**.
+Flint is built on top of **[PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer)** and makes it simple to ensure that your code style stays **clean** and **consistent**.
 
 <br>
 
