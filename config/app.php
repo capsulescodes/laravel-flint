@@ -2,7 +2,7 @@
 
 return [
 
-    'name' => 'Flint',
+    'name' => 'Laravel Flint',
 
     'version' => '1.0.0',
 

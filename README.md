@@ -1,37 +1,74 @@
-<p align="center"><img src="../capsules-codes-flint-logotype.svg" width="50%" alt="Logo Capsules Codes Flint"></p>
+<p align="center"><img src="capsules-laravel-flint-image.svg" width="50%" alt="Logo Capsules Codes Flint"></p>
 
-<p align="center">
-    <a href="https://github.com/laravel/flint/actions"><img src="https://github.com/laravel/flint/workflows/tests/badge.svg" alt="Build Status"></a>
-    <a href="https://packagist.org/packages/laravel/flint"><img src="https://img.shields.io/packagist/dt/laravel/flint" alt="Total Downloads"></a>
-    <a href="https://packagist.org/packages/laravel/flint"><img src="https://img.shields.io/packagist/v/laravel/flint" alt="Latest Stable Version"></a>
-    <a href="https://packagist.org/packages/laravel/flint"><img src="https://img.shields.io/packagist/l/laravel/flint" alt="License"></a>
-</p>
+<br>
 
-<a name="introduction"></a>
 ## Introduction
 
-**Laravel flint** is an opinionated PHP code style fixer for minimalists. flint is built on top of **[PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer)** and makes it simple to ensure that your code style stays **clean** and **consistent**.
+**Laravel Flint** is a PHP code style fixer for near-minimalists based on **[Laravel Pint](https://github.com/laravel/pint)**. Flint is built on top of **[PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer)** and makes it simple to ensure that your code style stays **clean** and **consistent**.
 
-## Official Documentation
+<br>
 
-Documentation for flint can be found on the [Laravel website](https://laravel.com/docs/flint).
+> [!NOTE]
+> This is in active development. New features will be introduced gradually.
 
-<a name="contributing"></a>
+<br>
+
+## Features
+
+<br>
+
+### Custom fixers
+
+```
+{
+    ...
+    "rules" : {
+
+        ...
+        "CapsulesCodes/method_chaining_indentation" : { "multi-line" : 4 },
+        "CapsulesCodes/multiple_lines_after_imports" : { "lines" : 2 },
+        "CapsulesCodes/spaces_inside_square_braces" : { "space" : "single" }
+        ...
+
+    },
+    "fixers" : [ "CapsulesCodes\\Fixers" ]
+    ...
+
+}
+```
+
+<br>
+
+### Empty preset
+
+```
+{
+    "preset" : "none",
+    ...
+}
+```
+
+<br>
+
 ## Contributing
 
-Thank you for considering contributing to flint! You can read the contribution guide [here](.github/CONTRIBUTING.md).
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
 
-<a name="code-of-conduct"></a>
-## Code of Conduct
+Please make sure to update tests as appropriate.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+The `main` branch is in sync with Laravel Pint. The `fork` branch contains the new features.
 
-<a name="security-vulnerabilities"></a>
-## Security Vulnerabilities
+<br>
 
-Please review [our security policy](https://github.com/laravel/flint/security/policy) on how to report security vulnerabilities.
+## Credits
 
-<a name="license"></a>
+- [Taylor Otwell](https://github.com/taylorotwell)
+- [Nuno Maduro](https://github.com/nunomaduro)
+- [Capsules Codes](https://github.com/capsulescodes)
+
+<br>
+
 ## License
 
-flint is open-sourced software licensed under the [MIT license](LICENSE.md).
+[MIT](https://choosealicense.com/licenses/mit/)
