@@ -1,5 +1,5 @@
 {
-    "name" : "capsulescodes/flint",
+    "name" : "capsulescodes/laravel-flint",
     "description" : "A Laravel-based PHP code style fixer for near-minimalists.",
     "keywords" : [ "php", "format", "formatter", "lint", "linter", "fix", "fixer" ],
     "homepage" : "https://capsules.codes",
