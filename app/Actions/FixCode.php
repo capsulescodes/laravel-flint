@@ -31,7 +31,9 @@ class FixCode
         }
         catch( ConsoleException $exception )
         {
-            return [ $exception->getCode(), [] ];
+            throw $exception;
+
+            // return [ $exception->getCode(), [] ];
         }
 
         if( is_null( $this->input->getOption( 'format' ) ) )
