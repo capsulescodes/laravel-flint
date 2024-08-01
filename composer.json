@@ -27,12 +27,12 @@
         "ext-xml" : "*"
     },
     "require-dev" : {
-        "friendsofphp/php-cs-fixer" : "^3.59.3",
-        "illuminate/view" : "^11.10.0",
+        "friendsofphp/php-cs-fixer" : "^3.31.1",
+        "illuminate/view" : "^11.19.0",
         "laravel-zero/framework" : "^11.0.1",
         "mockery/mockery" : "^1.6.12",
         "nunomaduro/termwind" : "^2.0.1",
-        "pestphp/pest" : "^2.34.8"
+        "pestphp/pest" : "^2.34.9"
     },
     "autoload" : {
         "psr-4" : {
