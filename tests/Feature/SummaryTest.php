@@ -28,7 +28,7 @@ it( 'may fail with errors', function()
 
 it( 'may pass', function()
 {
-    [ $statusCode, $output ] = run( 'default', [ 'path' => base_path('tests/Fixtures/without-issues') ] );
+    [ $statusCode, $output ] = run( 'default', [ 'path' => base_path( 'tests/Fixtures/without-issues-laravel' ) ] );
 
     expect( $statusCode )
         ->toBe( 0 )

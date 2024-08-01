@@ -18,7 +18,6 @@ class ProgressOutput
 
     protected int $symbolsPerLine = 0;
 
-
     public function __construct( protected EventDispatcherInterface $dispatcher, protected InputInterface $input, protected OutputInterface $output )
     {
         $this->symbolsPerLine = ( new Terminal() )->getWidth() - 4;

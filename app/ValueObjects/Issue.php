@@ -53,11 +53,6 @@ class Issue
         return $this->symbol;
     }
 
-    /**
-     * Returns the issue's diff, if any.
-     *
-     * @return string|null
-     */
     protected function diff() : string | null
     {
         if( $this->payload[ 'diff' ] )

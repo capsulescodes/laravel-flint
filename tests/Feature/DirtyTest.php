@@ -10,7 +10,7 @@ it( 'determines dirty files', function()
     $paths
         ->shouldReceive( 'dirty' )
         ->once()
-        ->andReturn( [ base_path( 'tests/Fixtures/without-issues/file.php' ) ] );
+        ->andReturn( [ base_path( 'tests/Fixtures/without-issues-laravel/file.php' ) ] );
 
     $this->swap( PathsRepository::class, $paths );
 
@@ -29,7 +29,7 @@ it( 'ignores the path argument', function()
     $paths
         ->shouldReceive( 'dirty' )
         ->once()
-        ->andReturn( [ base_path( 'tests/Fixtures/without-issues/file.php' ) ] );
+        ->andReturn( [ base_path( 'tests/Fixtures/without-issues-laravel/file.php' ) ] );
 
     $this->swap( PathsRepository::class, $paths );
 

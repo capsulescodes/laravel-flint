@@ -20,6 +20,7 @@ class ConfigurationResolverFactory
         'per',
         'psr12',
         'symfony',
+        'empty',
     ];
 
     public static function fromIO( InputInterface $input, OutputInterface $output ) : array
